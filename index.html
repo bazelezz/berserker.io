@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#140608">
+<meta name="description" content="Берсерк — клуб военно-тактических игр. Страйкбол, пейнтбол, лазертаг, орбибол. Полигоны «Юго-Восток» (Марусино), крытый павильон (Люберцы), «Лесная симфония» (Калужское шоссе). Прокат приводов, УСБ-56, полевая кухня.">
+<title>БЕРСЕРК / FIELD LOG — клуб военно-тактических игр</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Oswald:wght@500;600;700&family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+--bg:#140608;            /* глубокий бордово-чёрный */
+--bg2:#1c090c;
+--panel:#210b0f;
+--panel2:#2c1015;
+--text:#f5e9ea;
+--muted:#b08a8e;
+--line:#3a1419;
+--line2:#522026;
+--red:#ff3b3b;           /* алый — главный акцент */
+--red-hover:#ff5c5c;
+--red-dim:#a11f1f;
+--sand:#e8c88a;          /* тёплый песочный — вторичный */
+--white:#ffffff;
+--ink:#140608;
+--head:"Oswald",Impact,sans-serif;
+--mono:"JetBrains Mono",ui-monospace,monospace;
+--body:"Manrope",Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--body);
+  background-image:
+    linear-gradient(#ff3b3b08 1px,transparent 1px),
+    linear-gradient(90deg,#ff3b3b08 1px,transparent 1px);
+  background-size:32px 32px;}
+h1,h2,h3,p{margin:0}
+a{color:inherit;text-decoration:none}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+button,a{-webkit-tap-highlight-color:transparent}
+[hidden]{display:none!important}
+::selection{background:var(--red);color:var(--white)}
+:focus-visible{outline:2px dashed var(--red);outline-offset:4px}
+.container{width:min(1320px,calc(100% - 64px));margin-inline:auto}
+.icon{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.skip{position:fixed;top:-100px;left:20px;z-index:100;padding:14px;background:var(--red);color:var(--white);font-weight:800}
+.skip:focus{top:10px}
+
+/* ===== TOP STRIP ===== */
+.strip{background:var(--bg2);border-bottom:1px solid var(--line);font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
+.strip-inner{display:flex;justify-content:space-between;align-items:center;height:34px;gap:20px}
+.strip-inner span{display:inline-flex;align-items:center;gap:8px}
+.strip-inner .dot{width:6px;height:6px;background:var(--red);border-radius:50%;box-shadow:0 0 8px var(--red)}
+.strip-inner .dot.sand{background:var(--sand);box-shadow:0 0 8px var(--sand)}
+
+/* ===== HEADER ===== */
+.header{position:sticky;top:0;z-index:30;height:76px;background:#140608f2;border-bottom:1px solid var(--line);backdrop-filter:blur(14px)}
+.header-inner{height:100%;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.brand{display:flex;align-items:center;gap:13px}
+.brand-logo{height:54px;width:auto;object-fit:contain}
+.brand-mark{width:36px;height:36px;position:relative;border:2px solid var(--red);display:grid;place-items:center;font:700 20px var(--head);color:var(--red)}
+.brand-mark::before{content:"";position:absolute;inset:4px;border:1px solid var(--sand);opacity:.5}
+.brand-name{display:block;font:600 24px/1 var(--head);letter-spacing:.08em}
+.brand-caption{display:block;margin-top:5px;font-family:var(--mono);font-size:8px;letter-spacing:.18em;color:var(--red);text-transform:uppercase}
+.nav{display:flex;gap:2px}
+.nav a{position:relative;padding:10px 13px;font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;transition:color .15s}
+.nav a::before{content:"[";margin-right:4px;color:var(--line2);transition:color .15s}
+.nav a::after{content:"]";margin-left:4px;color:var(--line2);transition:color .15s}
+.nav a:hover{color:var(--red)}
+.nav a:hover::before,.nav a:hover::after{color:var(--red)}
+.header-actions{display:flex;align-items:center;gap:14px}
+.header-phone{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.05em;color:var(--text)}
+.header-phone small{display:block;font-size:8px;color:var(--muted);letter-spacing:.14em;margin-top:3px;text-transform:uppercase}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:46px;padding:12px 20px;border:1px solid transparent;font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;transition:all .18s}
+.btn:hover{transform:translateY(-1px)}
+.btn-red{background:var(--red);color:var(--white)}
+.btn-red:hover{background:var(--red-hover);box-shadow:0 0 0 3px #ff3b3b33}
+.btn-sand{background:transparent;border-color:var(--sand);color:var(--sand)}
+.btn-sand:hover{background:var(--sand);color:var(--ink)}
+.btn-ghost{background:transparent;border-color:var(--line2);color:var(--text)}
+.btn-ghost:hover{border-color:var(--red);color:var(--red)}
+.menu-toggle{display:none;align-items:center;justify-content:center;width:42px;height:42px;background:transparent;color:var(--text);border:1px solid var(--line2)}
+
+/* ===== HERO / BRIEFING ===== */
+.hero{position:relative;padding:56px 0 0;overflow:hidden}
+.hero-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:50px;align-items:start}
+.hero-code{font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--red);text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.hero-code::before{content:"";width:24px;height:1px;background:var(--red)}
+.hero h1{font:600 clamp(48px,6vw,92px)/0.98 var(--head);text-transform:uppercase;letter-spacing:-.02em;margin-top:22px}
+.hero h1 em{font-style:normal;color:var(--red);position:relative}
+.hero h1 em::after{content:"";position:absolute;left:0;bottom:6px;width:100%;height:2px;background:var(--red);opacity:.35}
+.hero-sub{font-family:var(--mono);font-size:13px;line-height:1.9;color:var(--text);margin-top:26px;max-width:560px}
+.hero-sub b{color:var(--red);font-weight:700}
+.hero-cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:32px}
+.hero-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:46px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.hero-meta div{padding:20px 24px 20px 0;border-right:1px solid var(--line)}
+.hero-meta div:last-child{border:0}
+.hero-meta strong{display:block;font:600 30px/1 var(--head);color:var(--red);letter-spacing:.02em}
+.hero-meta span{display:block;font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;margin-top:8px}
+
+/* tactical panel */
+.panel{background:var(--panel);border:1px solid var(--line);position:relative}
+.panel::before,.panel::after{content:"";position:absolute;width:12px;height:12px;border:1px solid var(--red)}
+.panel::before{top:-1px;left:-1px;border-right:0;border-bottom:0}
+.panel::after{bottom:-1px;right:-1px;border-left:0;border-top:0}
+.panel-head{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:9px;letter-spacing:.18em;color:var(--red);text-transform:uppercase}
+.panel-head .live{display:inline-flex;align-items:center;gap:6px;color:var(--red)}
+.panel-head .live::before{content:"";width:6px;height:6px;background:var(--red);border-radius:50%;animation:blink 1.6s infinite}
+@keyframes blink{50%{opacity:.3}}
+.panel-body{padding:20px 18px}
+.stat-row{display:flex;justify-content:space-between;align-items:baseline;padding:11px 0;border-bottom:1px dashed var(--line2);font-family:var(--mono);font-size:11px}
+.stat-row:last-child{border-bottom:0}
+.stat-row span{color:var(--muted);letter-spacing:.06em}
+.stat-row b{color:var(--red);font-weight:700;letter-spacing:.04em}
+.panel-map{display:block;width:100%;height:auto;padding:12px 18px 18px}
+
+/* ===== SECTIONS ===== */
+.section{padding:90px 0;border-top:1px solid var(--line)}
+.sec-head{display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:baseline;margin-bottom:44px}
+.sec-num{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--red);border:1px solid var(--red);padding:6px 10px}
+.sec-title{font:600 clamp(32px,3.6vw,54px)/1.05 var(--head);text-transform:uppercase;letter-spacing:-.01em}
+.sec-title em{font-style:normal;color:var(--red)}
+.sec-note{font-family:var(--mono);font-size:11px;line-height:1.9;color:var(--muted);margin-top:14px;max-width:620px}
+
+/* polygons */
+.poly-grid{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:0;border:1px solid var(--line)}
+.poly-card{position:relative;padding:28px;border-right:1px solid var(--line);background:var(--panel);transition:background .2s}
+.poly-card:last-child{border-right:0}
+.poly-card:hover{background:var(--panel2)}
+.poly-card .tag{display:inline-block;font-family:var(--mono);font-size:9px;letter-spacing:.16em;color:var(--red);border:1px solid var(--red);padding:4px 8px;text-transform:uppercase}
+.poly-card h3{font:600 26px/1.1 var(--head);text-transform:uppercase;margin-top:16px;letter-spacing:.01em}
+.poly-card .loc{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--sand);margin-top:8px;text-transform:uppercase}
+.poly-card p{font-size:12px;line-height:1.9;color:var(--muted);margin-top:16px}
+.poly-list{list-style:none;padding:0;margin:18px 0 0;font-family:var(--mono);font-size:10px;letter-spacing:.05em}
+.poly-list li{padding:7px 0;border-top:1px dashed var(--line2);display:flex;justify-content:space-between;gap:12px;color:var(--text)}
+.poly-list li span{color:var(--muted)}
+.poly-card::before{content:attr(data-idx);position:absolute;top:20px;right:20px;font:600 40px/1 var(--head);color:var(--line2)}
+
+/* formats */
+.fmt-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--line)}
+.fmt{padding:26px;border-right:1px solid var(--line);background:var(--panel);position:relative;transition:background .2s}
+.fmt:last-child{border-right:0}
+.fmt:hover{background:var(--panel2)}
+.fmt-num{font-family:var(--mono);font-size:9px;letter-spacing:.18em;color:var(--muted)}
+.fmt h3{font:600 24px/1.1 var(--head);text-transform:uppercase;margin-top:14px;color:var(--red)}
+.fmt p{font-size:12px;line-height:1.85;color:var(--muted);margin-top:14px}
+.fmt .age{display:inline-block;margin-top:16px;font-family:var(--mono);font-size:9px;letter-spacing:.12em;color:var(--sand);border-top:1px solid var(--sand);padding-top:8px}
+
+/* prices — supply packages */
+.supply{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--line);margin-top:8px}
+.sup{padding:28px;border-right:1px solid var(--line);background:var(--panel);display:flex;flex-direction:column;position:relative}
+.sup:last-child{border-right:0}
+.sup.hot{background:#2a0a0e;border-top:2px solid var(--red)}
+.sup.hot::after{content:"★ ОСНОВНОЙ";position:absolute;top:14px;right:14px;font-family:var(--mono);font-size:8px;letter-spacing:.16em;color:var(--red);border:1px solid var(--red);padding:3px 6px}
+.sup-name{font-family:var(--mono);font-size:9px;letter-spacing:.18em;color:var(--red);text-transform:uppercase}
+.sup h3{font:600 30px/1 var(--head);text-transform:uppercase;margin-top:16px}
+.sup-price{font:600 38px/1 var(--head);color:var(--text);margin-top:18px;letter-spacing:-.01em}
+.sup.hot .sup-price{color:var(--red)}
+.sup-price small{font:500 10px var(--mono);color:var(--muted);letter-spacing:.08em}
+.sup-list{list-style:none;padding:0;margin:20px 0 22px;font-family:var(--mono);font-size:10px;line-height:1.7}
+.sup-list li{padding:9px 0;border-bottom:1px dashed var(--line2);color:var(--text)}
+.sup-list li span{display:block;color:var(--muted);font-size:9px;letter-spacing:.05em;margin-top:3px}
+.sup .btn{margin-top:auto;width:100%}
+
+/* extras */
+.extras{margin-top:34px;border:1px solid var(--line);background:var(--panel)}
+.extras-head{display:flex;justify-content:space-between;align-items:center;padding:16px 22px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:var(--red);text-transform:uppercase}
+.extras-grid{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.extra{padding:18px 22px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);display:flex;justify-content:space-between;gap:16px;font-family:var(--mono);font-size:11px}
+.extra:nth-child(2n){border-right:0}
+.extra:nth-last-child(-n+2){border-bottom:0}
+.extra b{color:var(--red);font-weight:700;white-space:nowrap}
+
+/* logistics */
+.logistics{display:grid;grid-template-columns:1.1fr 1fr;gap:0;border:1px solid var(--line)}
+.log-col{padding:30px;border-right:1px solid var(--line);background:var(--panel)}
+.log-col:last-child{border-right:0}
+.log-col h3{font:600 24px var(--head);text-transform:uppercase;color:var(--red);margin-bottom:18px}
+.log-item{display:flex;gap:14px;padding:14px 0;border-top:1px dashed var(--line2);font-size:12px;line-height:1.8;color:var(--text)}
+.log-item:first-of-type{border-top:0}
+.log-item .icon{color:var(--red);flex-shrink:0;margin-top:2px}
+.log-item strong{display:block;color:var(--text);font-size:12px;letter-spacing:.02em}
+.log-item p{color:var(--muted);font-size:11px;line-height:1.85;margin-top:5px}
+
+/* FAQ — terminal */
+.term{border:1px solid var(--line);background:#0d0405;font-family:var(--mono)}
+.term-head{display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid var(--line);font-size:9px;letter-spacing:.18em;color:var(--red);text-transform:uppercase}
+.term-head i{width:10px;height:10px;border-radius:50%;background:var(--red);display:inline-block}
+.term-head i:nth-child(2){background:var(--sand)}
+.term-head i:nth-child(3){background:var(--white)}
+details{border-bottom:1px solid var(--line2)}
+details:last-child{border-bottom:0}
+summary{position:relative;padding:18px 40px 18px 18px;font-size:12px;font-weight:500;line-height:1.7;list-style:none;cursor:pointer;color:var(--text);letter-spacing:.02em}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"> ";color:var(--red)}
+summary::after{content:"+";position:absolute;right:16px;top:16px;color:var(--red);font-size:18px}
+details[open] summary::after{content:"−"}
+details p{font-size:11px;line-height:1.9;color:var(--muted);padding:0 18px 18px 32px}
+
+/* reviews */
+.rev-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--line)}
+.rev{padding:26px;border-right:1px solid var(--line);background:var(--panel);display:flex;flex-direction:column}
+.rev:last-child{border-right:0}
+.rev-top{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:9px;letter-spacing:.16em;color:var(--red)}
+.rev-stars{color:var(--red);letter-spacing:.15em}
+.rev-text{font-size:12px;line-height:1.95;color:var(--text);margin-top:18px;flex-grow:1}
+.rev-who{margin-top:22px;padding-top:16px;border-top:1px dashed var(--line2);font-family:var(--mono);font-size:10px;letter-spacing:.06em;color:var(--muted)}
+.rev-who b{display:block;color:var(--text);font-size:12px;font-weight:700;letter-spacing:.02em;margin-bottom:4px}
+
+/* CTA */
+.cta{padding:70px 0;border-top:1px solid var(--line);background:linear-gradient(180deg,transparent,#2a0a0e)}
+.cta-inner{display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center}
+.cta h2{font:600 clamp(34px,4vw,60px)/1.02 var(--head);text-transform:uppercase}
+.cta h2 em{font-style:normal;color:var(--red)}
+.cta p{font-family:var(--mono);font-size:12px;line-height:1.9;color:var(--muted);margin-top:16px;max-width:640px}
+.cta-actions{display:flex;flex-direction:column;gap:10px;min-width:260px}
+.cta-actions .btn{width:100%}
+
+/* footer */
+.footer{padding:40px 0 28px;border-top:1px solid var(--line);background:var(--bg2)}
+.footer-grid{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:40px;padding-bottom:30px;border-bottom:1px solid var(--line)}
+.footer h4{font-family:var(--mono);font-size:9px;letter-spacing:.18em;color:var(--red);text-transform:uppercase;margin:0 0 16px}
+.footer p,.footer a{font-size:12px;line-height:1.9;color:var(--muted)}
+.footer a:hover{color:var(--red)}
+.footer-bottom{display:flex;justify-content:space-between;gap:20px;padding-top:22px;font-family:var(--mono);font-size:9px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
+
+@media(max-width:1100px){
+.container{width:calc(100% - 40px)}
+.hero-grid{grid-template-columns:1fr}
+.poly-grid{grid-template-columns:1fr}
+.poly-card{border-right:0;border-bottom:1px solid var(--line)}
+.poly-card:last-child{border-bottom:0}
+.fmt-grid{grid-template-columns:1fr 1fr}
+.fmt:nth-child(2){border-right:0}
+.fmt:nth-child(1),.fmt:nth-child(2){border-bottom:1px solid var(--line)}
+.supply{grid-template-columns:1fr 1fr}
+.sup:nth-child(2){border-right:0}
+.sup:nth-child(1),.sup:nth-child(2){border-bottom:1px solid var(--line)}
+.logistics{grid-template-columns:1fr}
+.log-col{border-right:0;border-bottom:1px solid var(--line)}
+.log-col:last-child{border-bottom:0}
+.nav{display:none}
+.menu-toggle{display:flex}
+}
+@media(max-width:680px){
+.header .btn{display:none}
+.hero h1{font-size:44px}
+.hero-meta{grid-template-columns:1fr 1fr}
+.hero-meta div:nth-child(2){border-right:0}
+.hero-meta div:nth-child(3){grid-column:1/-1;border-top:1px solid var(--line);border-right:0}
+.fmt-grid{grid-template-columns:1fr}
+.fmt{border-right:0;border-bottom:1px solid var(--line)}
+.supply{grid-template-columns:1fr}
+.sup{border-right:0;border-bottom:1px solid var(--line)}
+.extras-grid{grid-template-columns:1fr}
+.extra{border-right:0}
+.extra:nth-last-child(-n+2){border-bottom:1px solid var(--line)}
+.extra:last-child{border-bottom:0}
+.rev-grid{grid-template-columns:1fr}
+.rev{border-right:0;border-bottom:1px solid var(--line)}
+.rev:last-child{border-bottom:0}
+.cta-inner{grid-template-columns:1fr}
+.footer-grid{grid-template-columns:1fr}
+.footer-bottom{flex-direction:column}
+}
+@media(prefers-reduced-motion:reduce){
+html{scroll-behavior:auto}*,*::before,*::after{transition:none!important;animation:none!important}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Перейти к содержимому</a>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+  <symbol id="arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="arrow-up" viewBox="0 0 24 24"><path d="M6 18 18 6M6 6h12v12"/></symbol>
+  <symbol id="target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><path d="M12 1v5m0 12v5M1 12h5m12 0h5"/></symbol>
+  <symbol id="shield" viewBox="0 0 24 24"><path d="m12 2 8 3v6c0 5-8 11-8 11S4 16 4 11V5l8-3Z"/><path d="m8 11 3 3 5-6"/></symbol>
+  <symbol id="pin" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="3"/></symbol>
+  <symbol id="clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 6v6l4 2"/></symbol>
+  <symbol id="people" viewBox="0 0 24 24"><circle cx="9" cy="7" r="3"/><path d="M3 21v-3a6 6 0 0 1 12 0v3M16 4a3 3 0 0 1 0 6m2 4a5 5 0 0 1 3 5v2"/></symbol>
+  <symbol id="phone" viewBox="0 0 24 24"><path d="m5 3 4-1 3 6-3 2c1 3 3 5 5 6l2-3 6 3-1 4c-1 5-10 0-14-4S1 4 5 3Z"/></symbol>
+  <symbol id="menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+  <symbol id="mask" viewBox="0 0 24 24"><path d="M3 5c5-3 13-3 18 0v8l-5 8H8l-5-8V5Z"/><path d="M5 7h14v5l-4 1-3-2-3 2-4-1V7Zm4 10h6"/></symbol>
+  <symbol id="tent" viewBox="0 0 24 24"><path d="m12 3 9 17H3L12 3Z"/><path d="M12 3v17M7 20l5-9 5 9"/></symbol>
+  <symbol id="fire" viewBox="0 0 24 24"><path d="M12 2c1 5 5 6 5 11a5 5 0 0 1-10 0c0-3 2-5 3-7 0 2 1 3 2 3s1-4 0-7Z"/></symbol>
+  <symbol id="house" viewBox="0 0 24 24"><path d="m3 11 9-7 9 7M5 10v10h14V10"/></symbol>
+  <symbol id="box" viewBox="0 0 24 24"><path d="m3 7 9-4 9 4v10l-9 4-9-4V7Z"/><path d="M3 7l9 4 9-4M12 11v10"/></symbol>
+</svg>
+
+<!-- TOP STRIP -->
+<div class="strip">
+  <div class="container strip-inner">
+    <span><i class="dot"></i> ПОЛИГОНЫ ОТКРЫТЫ · ПРИЁМ ЗАЯВОК 24/7</span>
+    <span>МОСКВА / МОСКОВСКАЯ ОБЛАСТЬ</span>
+    <span><i class="dot sand"></i> БРОНИРОВАНИЕ ОТ 10 ЧЕЛОВЕК</span>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="container header-inner">
+    <a class="brand" href="#top" aria-label="Берсерк — на главную">
+      <img class="brand-logo" src="images/logo.png" alt="Берсерк" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';">
+      <span class="brand-mark" style="display:none;" aria-hidden="true">Б</span>
+      <span><span class="brand-name">БЕРСЕРК</span><span class="brand-caption">Berserker · Field Log</span></span>
+    </a>
+    <nav class="nav" id="navigation" aria-label="Главная навигация">
+      <a href="#polygons">Полигоны</a>
+      <a href="#formats">Форматы</a>
+      <a href="#supply">Тарифы</a>
+      <a href="#logistics">Логистика</a>
+      <a href="#faq">Брифинг</a>
+      <a href="#reviews">Отзывы</a>
+      <a href="#contacts">Связь</a>
+    </nav>
+    <div class="header-actions">
+      <a class="header-phone" href="tel:+79167101200">+7 (916) 710-12-00<small>Оперативный штаб</small></a>
+      <a class="btn btn-red" href="#contacts">Заявка</a>
+      <button class="menu-toggle" type="button" aria-label="Открыть меню" aria-controls="navigation" aria-expanded="false"><svg class="icon" aria-hidden="true"><use href="#menu"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- HERO / BRIEFING -->
+<section class="hero" id="top">
+  <div class="container hero-grid">
+    <div>
+      <div class="hero-code">FIELD LOG / 001 · БРИФИНГ ПЕРЕД ВЫХОДОМ</div>
+      <h1>Военно-<em>тактический</em><br>клуб «Берсерк»</h1>
+      <p class="hero-sub">Страйкбол, пейнтбол, лазертаг и орбибол на <b>трёх полигонах</b> в Москве и Московской области. Прокат приводов, снаряжения, армейских палаток УСБ-56 и полевая кухня. <b>Работаем сборные и приватные игры.</b></p>
+      <div class="hero-cta">
+        <a class="btn btn-red" href="#supply">Смотреть тарифы <svg class="icon" aria-hidden="true"><use href="#arrow"/></svg></a>
+        <a class="btn btn-sand" href="#polygons">Наши полигоны</a>
+      </div>
+
+      <div class="hero-meta">
+        <div><strong>3</strong><span>полигона в Москве и МО</span></div>
+        <div><strong>10 000 м²</strong><span>площадь «Юго-Востока»</span></div>
+        <div><strong>4</strong><span>формата: airsoft, пейнтбол, лазертаг, орбибол</span></div>
+      </div>
+    </div>
+
+    <!-- tactical panel -->
+    <aside class="panel" aria-label="Сводка по клубу">
+      <div class="panel-head">
+        <span>BERSERKER / STATUS BOARD</span>
+        <span class="live">LIVE</span>
+      </div>
+      <div class="panel-body">
+        <div class="stat-row"><span>СТРАЙКБОЛ · СБОРНАЯ</span><b>1 000 – 1 500 ₽</b></div>
+        <div class="stat-row"><span>СТРАЙКБОЛ · ПРОКАТ</span><b>2 500 – 3 500 ₽</b></div>
+        <div class="stat-row"><span>ПЕЙНТБОЛ · БУДНИ</span><b>ОТ 1 500 ₽</b></div>
+        <div class="stat-row"><span>ПЕЙНТБОЛ · ВЫХОДНЫЕ</span><b>ОТ 1 800 ₽</b></div>
+        <div class="stat-row"><span>ЛАЗЕРТАГ / ОРБИБОЛ</span><b>ОТ 1 000 ₽ / 2 ч</b></div>
+        <div class="stat-row"><span>ПАЛАТКА УСБ-56</span><b>ПО ЗАПРОСУ</b></div>
+      </div>
+      <svg class="panel-map" viewBox="0 0 400 200" aria-hidden="true">
+        <defs>
+          <pattern id="pg" width="16" height="16" patternUnits="userSpaceOnUse">
+            <path d="M16 0H0v16" fill="none" stroke="#ff3b3b18"/>
+          </pattern>
+        </defs>
+        <rect width="400" height="200" fill="url(#pg)"/>
+        <rect x="8" y="8" width="384" height="184" fill="none" stroke="#ff3b3b44" stroke-dasharray="4 6"/>
+        <circle cx="80" cy="70" r="6" fill="#ff3b3b"/>
+        <text x="94" y="74" fill="#b08a8e" font-family="JetBrains Mono, monospace" font-size="9">МАРУСИНО</text>
+        <circle cx="270" cy="60" r="6" fill="#e8c88a"/>
+        <text x="284" y="64" fill="#b08a8e" font-family="JetBrains Mono, monospace" font-size="9">ЛЮБЕРЦЫ</text>
+        <circle cx="300" cy="150" r="6" fill="#ffffff"/>
+        <text x="180" y="172" fill="#b08a8e" font-family="JetBrains Mono, monospace" font-size="9">КАЛУЖСКОЕ Ш. / «ЛЕСНАЯ СИМФОНИЯ»</text>
+        <path d="M80 70 Q180 40 270 60 T300 150" fill="none" stroke="#ff3b3b66" stroke-width="1.5" stroke-dasharray="3 5"/>
+      </svg>
+    </aside>
+  </div>
+</section>
+
+<!-- POLYGONS -->
+<section class="section" id="polygons">
+  <div class="container">
+    <div class="sec-head">
+      <span class="sec-num">01 / POLYGONS</span>
+      <div>
+        <h2 class="sec-title">Три площадки.<br><em>Под любую задачу.</em></h2>
+        <p class="sec-note">Полигоны подобраны под разные форматы и погоду: масштабные лесные сценарии, замкнутые бои CQB, крытый отапливаемый павильон для детей и зимы.</p>
+      </div>
+    </div>
+
+    <div class="poly-grid">
+      <article class="poly-card" data-idx="01">
+        <span class="tag">ОСНОВНОЙ ПОЛИГОН</span>
+        <h3>«Юго-Восток»</h3>
+        <div class="loc">Марусино · Люберцы</div>
+        <p>Более 10 000 м²: 5 освещаемых и 2 неосвещаемые локации. Расчищенный лес, овраги, перепады высот, два двухэтажных дома-«муравейника» и залы CQB для боя в замкнутом пространстве.</p>
+        <ul class="poly-list">
+          <li>Площадь <b>10 000+ м²</b></li>
+          <li>Освещаемые локации <b>5</b></li>
+          <li>Дома-«муравейники» <b>2</b></li>
+          <li>Залы CQB <b>есть</b></li>
+        </ul>
+      </article>
+
+      <article class="poly-card" data-idx="02">
+        <span class="tag">КРЫТЫЙ ПАВИЛЬОН</span>
+        <h3>Отапливаемый павильон</h3>
+        <div class="loc">Люберцы</div>
+        <p>Крытое отапливаемое пространство для лазертага и орбибола. Оптимальное решение для детских праздников, семейных игр и тренировок в холодное время года.</p>
+        <ul class="poly-list">
+          <li>Формат <b>лазертаг / орбибол</b></li>
+          <li>Отопление <b>есть</b></li>
+          <li>Для детей <b>от 6–7 лет</b></li>
+          <li>Погода <b>любая</b></li>
+        </ul>
+      </article>
+
+      <article class="poly-card" data-idx="03">
+        <span class="tag">ЛЕСНОЙ ПОЛИГОН</span>
+        <h3>«Лесная симфония»</h3>
+        <div class="loc">Калужское шоссе</div>
+        <p>Просторная локация на свежем воздухе для масштабных сценариев страйкбола и пейнтбола. Подходит для больших команд, корпоративов и многодневных выездов.</p>
+        <ul class="poly-list">
+          <li>Тип <b>открытый лес</b></li>
+          <li>Сценарии <b>масштабные</b></li>
+          <li>Компании <b>10–100+</b></li>
+          <li>Палатки <b>УСБ-56</b></li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- FORMATS -->
+<section class="section" id="formats">
+  <div class="container">
+    <div class="sec-head">
+      <span class="sec-num">02 / FORMATS</span>
+      <div>
+        <h2 class="sec-title">Четыре направления.<br><em>Один клуб.</em></h2>
+        <p class="sec-note">Реалистичный airsoft для взрослых, классический пейнтбол, безопасный лазертаг для детей и орбибол без синяков и следов на одежде.</p>
+      </div>
+    </div>
+
+    <div class="fmt-grid">
+      <div class="fmt">
+        <div class="fmt-num">F-01 / AIRSOFT</div>
+        <h3>Страйкбол</h3>
+        <p>Точные копии реального оружия, стреляющие пластиковыми шарами. Прокат приводов, формы, масок и стартового пакета шаров.</p>
+        <span class="age">ОТ 16–18 ЛЕТ</span>
+      </div>
+      <div class="fmt">
+        <div class="fmt-num">F-02 / PAINTBALL</div>
+        <h3>Пейнтбол</h3>
+        <p>Классический командный формат с маркерами и шарами с краской. Видимые попадания, динамичные сценарии, подходит новичкам.</p>
+        <span class="age">ОТ 10–12 ЛЕТ</span>
+      </div>
+      <div class="fmt">
+        <div class="fmt-num">F-03 / LASERTAG</div>
+        <h3>Лазертаг</h3>
+        <p>Бесконтактный бой: попадания фиксирует электроника, болевых ощущений нет. Идеален для детей, семей и корпоративов.</p>
+        <span class="age">ОТ 6–7 ЛЕТ</span>
+      </div>
+      <div class="fmt">
+        <div class="fmt-num">F-04 / ORBIBALL</div>
+        <h3>Орбибол / Гидробол</h3>
+        <p>Стрельба мягкими гидрогелевыми шариками. Не оставляет синяков и следов на одежде — безопасный формат для любых компаний.</p>
+        <span class="age">БЕЗОПАСНО</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SUPPLY / PRICES -->
+<section class="section" id="supply">
+  <div class="container">
+    <div class="sec-head">
+      <span class="sec-num">03 / SUPPLY</span>
+      <div>
+        <h2 class="sec-title">Пакеты снабжения.<br><em>Гибкие тарифы.</em></h2>
+        <p class="sec-note">Цены ориентировочные: зависят от направления, дня недели и количества игроков. В выходные и праздники — немного выше. Точный расчёт — при бронировании.</p>
+      </div>
+    </div>
+
+    <div class="supply">
+      <article class="sup">
+        <div class="sup-name">SUPPLY / 01 · AIRSOFT</div>
+        <h3>Страйкбол</h3>
+        <div class="sup-price">1 000 ₽ <small>/ сборная</small></div>
+        <ul class="sup-list">
+          <li>Сборная игра со своим снаряжением<span>около 1 000 – 1 500 ₽</span></li>
+          <li>Прокат полного комплекта<span>2 500 – 3 500 ₽ с человека</span></li>
+          <li>Привод, маска, форма, 500 шаров<span>включено в прокат</span></li>
+          <li>Корпоратив / приват<span>индивидуально, от 10–15 чел.</span></li>
+        </ul>
+        <a class="btn btn-ghost" href="#contacts">Запросить расчёт</a>
+      </article>
+
+      <article class="sup hot">
+        <div class="sup-name">SUPPLY / 02 · PAINTBALL</div>
+        <h3>Пейнтбол</h3>
+        <div class="sup-price">1 500 ₽ <small>/ будни</small></div>
+        <ul class="sup-list">
+          <li>Стартовый пакет в будни<span>от 1 500 ₽ с человека</span></li>
+          <li>Стартовый пакет в выходные<span>1 800 – 2 000 ₽ с человека</span></li>
+          <li>Маска, форма, маркер, 200–500 шаров<span>включено</span></li>
+          <li>Дополнительные шары<span>докупаются на месте</span></li>
+        </ul>
+        <a class="btn btn-red" href="#contacts">Забронировать</a>
+      </article>
+
+      <article class="sup">
+        <div class="sup-name">SUPPLY / 03 · LASERTAG</div>
+        <h3>Лазертаг</h3>
+        <div class="sup-price">1 000 ₽ <small>/ будни, 2 ч</small></div>
+        <ul class="sup-list">
+          <li>Будние дни<span>от 1 000 – 1 200 ₽ / 2 ч</span></li>
+          <li>Выходные<span>от 1 400 – 1 600 ₽ / 2 ч</span></li>
+          <li>Оружие и датчики попаданий<span>включено</span></li>
+          <li>Инструктор-аниматор<span>ведёт игру по сценариям</span></li>
+        </ul>
+        <a class="btn btn-ghost" href="#contacts">Забронировать</a>
+      </article>
+
+      <article class="sup">
+        <div class="sup-name">SUPPLY / 04 · ORBIBALL</div>
+        <h3>Орбибол</h3>
+        <div class="sup-price">1 000 ₽ <small>/ будни, 2 ч</small></div>
+        <ul class="sup-list">
+          <li>Будние дни<span>от 1 000 – 1 200 ₽ / 2 ч</span></li>
+          <li>Выходные<span>от 1 400 – 1 600 ₽ / 2 ч</span></li>
+          <li>Мягкие гидрогелевые шары<span>без синяков</span></li>
+          <li>Инструктор-аниматор<span>включён</span></li>
+        </ul>
+        <a class="btn btn-ghost" href="#contacts">Забронировать</a>
+      </article>
+    </div>
+
+    <div class="extras">
+      <div class="extras-head">
+        <span>EXTRA / ОПЦИИ И ЗОНЫ ОТДЫХА</span>
+        <span>АРЕНДА · ПИТАНИЕ · ПАЛАТКИ</span>
+      </div>
+      <div class="extras-grid">
+        <div class="extra"><span>Тёплые беседки / зоны в павильоне (зима/осень)</span><b>1 500 – 2 500 ₽ / час</b></div>
+        <div class="extra"><span>Фиксированная аренда беседки на день</span><b>5 000 – 7 000 ₽</b></div>
+        <div class="extra"><span>Летние шатры и мангальные зоны</span><b>от 1 000 ₽ / час</b></div>
+        <div class="extra"><span>Аренда армейских палаток УСБ-56</span><b>по запросу</b></div>
+        <div class="extra"><span>Военно-полевая кухня (каша, тушёнка, чай)</span><b>по меню</b></div>
+        <div class="extra"><span>Прокат приводов и снаряжения</span><b>2 500 – 3 500 ₽</b></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOGISTICS -->
+<section class="section" id="logistics">
+  <div class="container">
+    <div class="sec-head">
+      <span class="sec-num">04 / LOGISTICS</span>
+      <div>
+        <h2 class="sec-title">Что важно<br><em>перед поездкой.</em></h2>
+        <p class="sec-note">Бронирование, одежда, возрастные допуски и как добраться. Короткий чек-лист, чтобы игра прошла без сюрпризов.</p>
+      </div>
+    </div>
+
+    <div class="logistics">
+      <div class="log-col">
+        <h3>Чек-лист игрока</h3>
+        <div class="log-item">
+          <svg class="icon" aria-hidden="true"><use href="#clock"/></svg>
+          <div><strong>Бронирование заранее</strong><p>Приватные игры и праздники — минимум за 1–2 недели, особенно на выходные. Требуется частичная предоплата.</p></div>
+        </div>
+        <div class="log-item">
+          <svg class="icon" aria-hidden="true"><use href="#box"/></svg>
+          <div><strong>Обувь — своя</strong><p>Камуфляж выдаём, обувь — своя: спортивная или трекинговая (берцы, плотные кроссовки), которую не жалко испачкать.</p></div>
+        </div>
+        <div class="log-item">
+          <svg class="icon" aria-hidden="true"><use href="#people"/></svg>
+          <div><strong>Возрастные допуски</strong><p>Лазертаг и орбибол — с 6–7 лет. Пейнтбол — с 10–12 лет. Страйкбол — с 16–18 лет или в сопровождении родителей.</p></div>
+        </div>
+      </div>
+
+      <div class="log-col">
+        <h3>Полигоны и дорога</h3>
+        <div class="log-item">
+          <svg class="icon" aria-hidden="true"><use href="#pin"/></svg>
+          <div><strong>«Юго-Восток» — Марусино, Люберцы</strong><p>Основной полигон. 10 000+ м², лес, овраги, дома-«муравейники», залы CQB.</p></div>
+        </div>
+        <div class="log-item">
+          <svg class="icon" aria-hidden="true"><use href="#house"/></svg>
+          <div><strong>Крытый павильон — Люберцы</strong><p>Отапливаемое помещение для лазертага и орбибола. Дети и зима.</p></div>
+        </div>
+        <div class="log-item">
+          <svg class="icon" aria-hidden="true"><use href="#target"/></svg>
+          <div><strong>«Лесная симфония» — Калужское шоссе</strong><p>Открытая лесная локация под масштабные сценарии и большие компании.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section" id="faq">
+  <div class="container">
+    <div class="sec-head">
+      <span class="sec-num">05 / BRIEFING</span>
+      <div>
+        <h2 class="sec-title">Брифинг.<br><em>Частые вопросы.</em></h2>
+        <p class="sec-note">Всё, что чаще всего спрашивают перед первой игрой. Не нашли ответ — позвоните в оперативный штаб клуба.</p>
+      </div>
+    </div>
+
+    <div class="term">
+      <div class="term-head"><i></i><i></i><i></i><span>BERSERKER / Q&amp;A · SECURE CHANNEL</span></div>
+      <details open>
+        <summary>Какие направления есть в клубе?</summary>
+        <p>Страйкбол (airsoft), пейнтбол, лазертаг и орбибол (гидробол). Работаем как со сборными игроками, так и с приватными компаниями, корпоративами и детскими праздниками.</p>
+      </details>
+      <details>
+        <summary>Можно ли приехать без своего снаряжения?</summary>
+        <p>Да. Для страйкбола доступен прокат полного комплекта: привод, защитная маска, форма и стартовый пакет шаров (около 500 шт.). Для пейнтбола и лазертага снаряжение также входит в стартовый пакет.</p>
+      </details>
+      <details>
+        <summary>С какого возраста допускаются дети?</summary>
+        <p>Лазертаг и орбибол — с 6–7 лет. Пейнтбол — с 10–12 лет. Страйкбол — строго с 16–18 лет или в сопровождении родителей.</p>
+      </details>
+      <details>
+        <summary>Как забронировать полигон на компанию?</summary>
+        <p>Оставьте заявку по телефону или напишите в официальное сообщество ВКонтакте. Для приватных игр и праздников бронирование минимум за 1–2 недели, требуется частичная предоплата.</p>
+      </details>
+      <details>
+        <summary>Есть ли где отдохнуть и поесть после игры?</summary>
+        <p>Да: зоны отдыха и барбекю, летние шатры до 40 человек, зимой — два обогреваемых помещения. Можно арендовать палатку УСБ-56 и заказать аутентичное питание из военно-полевой кухни.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="section" id="reviews">
+  <div class="container">
+    <div class="sec-head">
+      <span class="sec-num">06 / REPORTS</span>
+      <div>
+        <h2 class="sec-title">Донесения<br><em>с полигонов.</em></h2>
+        <p class="sec-note">Отзывы игроков и организаторов. Рейтинг 5.0 по данным карт — спасибо каждому, кто приезжает играть.</p>
+      </div>
+    </div>
+
+    <div class="rev-grid">
+      <article class="rev">
+        <div class="rev-top"><span>REPORT / 01</span><span class="rev-stars">★★★★★</span></div>
+        <p class="rev-text">«Играли в страйкбол на «Юго-Востоке». Территория огромная, дома-«муравейники» и CQB — отдельный кайф. Прокат приводов в порядке, инструктаж чёткий. Приедем командой ещё».</p>
+        <div class="rev-who"><b>Алексей</b>Страйкбол · сборная игра</div>
+      </article>
+      <article class="rev">
+        <div class="rev-top"><span>REPORT / 02</span><span class="rev-stars">★★★★★</span></div>
+        <p class="rev-text">«Отмечали день рождения сына — лазертаг в крытом павильоне. Дети в восторге, аниматор отработал по сценарию. После игры — шатёр и мангал. Организация на уровне».</p>
+        <div class="rev-who"><b>Елена</b>Детский праздник · лазертаг</div>
+      </article>
+      <article class="rev">
+        <div class="rev-top"><span>REPORT / 03</span><span class="rev-stars">★★★★★</span></div>
+        <p class="rev-text">«Корпоратив на 40 человек в «Лесной симфонии». Разбили шатры, заказали полевую кухню — каша и тушёнка ушли на ура. Пейнтбол и орбибол, все довольны. Рекомендую».</p>
+        <div class="rev-who"><b>Дмитрий</b>Корпоратив · пейнтбол + орбибол</div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta" id="contacts">
+  <div class="container cta-inner">
+    <div>
+      <h2>Готовы выйти<br><em>на полигон?</em></h2>
+      <p>Оставьте заявку — подберём полигон, формат и тариф под вашу компанию. Приватные игры, корпоративы, детские праздники и сборные выезды.</p>
+      <p style="margin-top:14px; color:var(--red);">ТЕЛЕФОН: <a href="tel:+79167101200" style="color:var(--red); font-weight:700;">+7 (916) 710-12-00</a></p>
+    </div>
+    <div class="cta-actions">
+      <a class="btn btn-red" href="tel:+79167101200">Позвонить <svg class="icon" aria-hidden="true"><use href="#phone"/></svg></a>
+      <a class="btn btn-sand" href="tel:+79167101200">Оставить заявку</a>
+      <a class="btn btn-ghost" href="#polygons">Смотреть полигоны</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a class="brand" href="#top" aria-label="Берсерк — наверх">
+          <img class="brand-logo" src="images/logo.png" alt="Берсерк" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';">
+          <span class="brand-mark" style="display:none;" aria-hidden="true">Б</span>
+          <span><span class="brand-name">БЕРСЕРК</span><span class="brand-caption">Berserker · Field Log</span></span>
+        </a>
+        <p style="margin-top:16px;">Клуб военно-тактических игр. Страйкбол, пейнтбол, лазертаг, орбибол. Москва и Московская область.</p>
+      </div>
+      <div>
+        <h4>ПОЛИГОНЫ</h4>
+        <p>«Юго-Восток» — Марусино, Люберцы</p>
+        <p>Крытый павильон — Люберцы</p>
+        <p>«Лесная симфония» — Калужское шоссе</p>
+      </div>
+      <div>
+        <h4>СВЯЗЬ</h4>
+        <p><a href="tel:+79167101200">+7 (916) 710-12-00</a></p>
+        <p><a href="#">Сообщество ВКонтакте</a></p>
+        <p>Сборные игры · приват · корпоративы</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© БЕРСЕРК · КЛУБ ВОЕННО-ТАКТИЧЕСКИХ ИГР</span>
+      <span>ЦЕНЫ ОРИЕНТИРОВОЧНЫЕ · УТОЧНЯЙТЕ ПРИ БРОНИРОВАНИИ</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(() => {
+  "use strict";
+  const nav = document.querySelector("#navigation");
+  const menuToggle = document.querySelector(".menu-toggle");
+  const closeMenu = () => {
+    nav.classList.remove("is-open");
+    menuToggle.setAttribute("aria-expanded", "false");
+    menuToggle.setAttribute("aria-label", "Открыть меню");
+  };
+  menuToggle.addEventListener("click", () => {
+    const open = menuToggle.getAttribute("aria-expanded") !== "true";
+    nav.classList.toggle("is-open", open);
+    menuToggle.setAttribute("aria-expanded", String(open));
+    menuToggle.setAttribute("aria-label", open ? "Закрыть меню" : "Открыть меню");
+  });
+  nav.querySelectorAll("a").forEach(a => a.addEventListener("click", closeMenu));
+  document.addEventListener("click", e => { if (!e.target.closest(".header")) closeMenu(); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") closeMenu(); });
+})();
+</script>
+</body>
+</html>
